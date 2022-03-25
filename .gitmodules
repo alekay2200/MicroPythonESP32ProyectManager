@@ -1,0 +1,3 @@
+[submodule "PyFileSystem"]
+	path = PyFileSystem
+	url = git@github.com:alekay2200/PyFileSystem.git
