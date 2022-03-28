@@ -1,6 +1,4 @@
 from argparse import ArgumentParser
-from tokenize import triple_quoted
-from typing import List
 from subprocess import Popen, PIPE
 from PyFileSystem.fileSystem import get_files, get_directories
 from os.path import join
