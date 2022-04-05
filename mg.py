@@ -18,6 +18,7 @@ def cli():
     parser.add_argument("port", help="specify port where esp32 is connected")
     parser.add_argument("--upload", help="upload the entire proyect, must containt a main.py on the root")
     parser.add_argument("--tree", help="", action="store_true")
+    parser.add_argument("--clean", help="", action="store_true")
     parser.add_argument("--run", help="run especify file")
 
     return parser.parse_args()
@@ -84,6 +85,25 @@ def tree_command(path: str, device_port: str, deep: int):
         if __isMicroPythonDir(item):
             tree_command(join(path, _item), device_port, deep+1)
 
+def clean_command(device_port: str):
+    p = Popen(f"ampy --port {device_port} ls", stdout=PIPE, shell=True)
+    out_bytes, err = p.communicate()
+    out = out_bytes.decode("utf-8")
+    out = out.split("\n")
+    out = out[:-1] # Remove last element, is an empty line break
+    
+    for item in out:
+        # remove forward slash at the start of the item
+        _item = item[1:]
+        if __isMicroPythonDir(item):
+            p = Popen(f"ampy --port {device_port} rmdir {_item}", stdout=PIPE, shell=True)
+            p.communicate()
+            print(f"Directory {_item} was removed")
+        else:
+            p = Popen(f"ampy --port {device_port} rm {_item}", stdout=PIPE, shell=True)
+            p.communicate()
+            print(f"File {_item} was removed")
+
 if __name__ == "__main__":
     args = cli()
 
@@ -92,3 +112,6 @@ if __name__ == "__main__":
 
     if args.upload:
         upload_command(args.upload, args.port)
+
+    if args.clean:
+        clean_command(args.port)

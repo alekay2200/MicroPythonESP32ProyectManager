@@ -11,4 +11,5 @@ First of all install MicroPython on your esp32
 
 - **upload** [--upload path_to_proyect]. Upload entire proyect
 - **tree** [--tree] show on console estructure of the proyect inside the esp32 board
+- **clean** [--clean] clean all files and directories inside the esp32 board
 - **run** Not working
