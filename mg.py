@@ -11,6 +11,11 @@ def __isMicroPythonDir(item: str):
 def __is_hidden(item: str):
     return item[0] == "."
 
+def windpath_to_unixpath(path: str):
+    if path.count("\\") <= 0: return path
+    return path.replace("\\", "/")
+
+
 def cli():
     parser = ArgumentParser(prog="mg", 
                             description="MicroPython ESP32 proyect manager")
@@ -38,6 +43,7 @@ def upload_command(path_to_proyect: str, device_port: str):
         p.communicate()
 
 def run_from_board_command(file: str, device_port: str):
+    path = windpath_to_unixpath(path)
     path = file.split("/")
     if len(path) > 1:
         path = "/".join(path[:-1])
